@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #1A1A1A;
+  color: #F5F1E8;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-6 py-3 bg-bordo text-cream font-display uppercase tracking-wider rounded-sm transition-all duration-300 hover:bg-copper hover:shadow-lg hover:-translate-y-0.5;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center px-6 py-3 border border-cream/40 text-cream font-display uppercase tracking-wider rounded-sm transition-all duration-300 hover:border-copper hover:text-copper;
+  }
+  .section-title {
+    @apply font-display text-4xl md:text-5xl uppercase tracking-wider text-cream text-center;
+  }
+  .section-sub {
+    @apply text-cream/60 text-center max-w-xl mx-auto mt-3;
+  }
+}
+
+/* ========== Анимации при скролле (компонент <Reveal />) ========== */
+.reveal {
+  opacity: 0;
+  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.reveal-up    { transform: translateY(40px); }
+.reveal-left  { transform: translateX(-50px); }
+.reveal-right { transform: translateX(50px); }
+.reveal-zoom  { transform: scale(0.92); }
+.reveal-fade  { transform: none; }
+
+.reveal-in {
+  opacity: 1;
+  transform: translate(0, 0) scale(1);
+}
+
+/* ========== Hero: появление сразу при загрузке ========== */
+.fade-in {
+  animation: fadeIn 1s ease-out both;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ========== Плавающий эффект у иконки-скролла ========== */
+@keyframes float {
+  0%, 100% { transform: translate(-50%, 0); }
+  50%      { transform: translate(-50%, 8px); }
+}
+.animate-float { animation: float 2.2s ease-in-out infinite; }
+
+/* ========== Медленный зум фонового изображения Hero (параллакс) ========== */
+@keyframes heroZoom {
+  from { transform: scale(1); }
+  to   { transform: scale(1.12); }
+}
+.hero-bg { animation: heroZoom 18s ease-out forwards; }
+
+/* ========== Пульсация акцентного элемента ========== */
+@keyframes pulseCopper {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(184, 115, 51, 0.6); }
+  50%      { box-shadow: 0 0 0 12px rgba(184, 115, 51, 0); }
+}
+.pulse-copper { animation: pulseCopper 2.2s ease-out infinite; }
+
+/* ========== Бегущая полоска-подчёркивание у заголовка ========== */
+.underline-grow {
+  position: relative;
+  display: inline-block;
+}
+.underline-grow::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -14px;
+  width: 0;
+  height: 2px;
+  background: #B87333;
+  transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.3s,
+              left 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.3s;
+}
+.reveal-in .underline-grow::after {
+  width: 60px;
+  left: calc(50% - 30px);
+}
+
+/* Уважаем системную настройку "уменьшить движение" */
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .fade-in, .hero-bg, .animate-float, .pulse-copper {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
